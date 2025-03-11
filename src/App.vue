@@ -2,7 +2,7 @@
 import { reactive } from 'vue';
 
 
-/*   const estado = reactive({
+  const estado = reactive({
     filtro: 'todas',
     tarefaTemp: '',
     tarefas: [
@@ -19,7 +19,7 @@ import { reactive } from 'vue';
       finalizada: true,
       }
     ]
-  }) */
+  })
 
   const getTarefasPendentes = () => {
     return estado.tarefas.filter(tarefa => !tarefa.finalizada)
@@ -43,7 +43,12 @@ import { reactive } from 'vue';
   }
 
   const cadastraTarefa = () => {
-
+    const tarefaNova = {
+      titulo: estado.tarefaTemp,
+      finalizada: false,
+    }
+    estado.tarefas.push(tarefaNova);
+    estado.tarefaTemp = '';
   }
 </script>
 
@@ -55,10 +60,10 @@ import { reactive } from 'vue';
         Você possui {{ getTarefasPendentes().length }} tarefas pendentes
       </p>
     </header>
-    <form @submit="cadastraTarefa">
+    <form @submit.prevent="cadastraTarefa">
       <div class="row">
         <div class="col">
-          <input required type="text" placeholder="Digite aqui a descrição da tarefa" class="form-control">
+          <input :value="estado.tarefaTemp" @change="evento => estado.tarefaTemp = evento.target.value" required type="text" placeholder="Digite aqui a descrição da tarefa" class="form-control">
         </div>
         <div class="col-md-2">
           <button type="submit" class="btn btn-primary">Cadastrar</button>
